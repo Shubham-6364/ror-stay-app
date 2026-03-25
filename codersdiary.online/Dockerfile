@@ -8,7 +8,7 @@ RUN rm -rf /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 # Copy website files into nginx html directory
-COPY codersdiaryi_data/ /usr/share/nginx/html
+COPY codersdiary_data/ /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
