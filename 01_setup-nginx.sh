@@ -4,7 +4,7 @@ set -e
 
 echo "🚀 Installing NGINX..."
 sudo apt update
-sudo apt install -y nginx
+sudo apt install -y nginx certbot python3-certbot-nginx
 
 echo "📁 Creating NGINX config files..."
 
