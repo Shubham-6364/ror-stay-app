@@ -1,0 +1,144 @@
+{
+    "name": "Add Property Listing",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "add-listing",
+                "options": {
+                    "responseHeaders": {
+                        "entries": [
+                            {
+                                "name": "Access-Control-Allow-Origin",
+                                "value": "*"
+                            },
+                            {
+                                "name": "Access-Control-Allow-Methods",
+                                "value": "POST, OPTIONS"
+                            },
+                            {
+                                "name": "Access-Control-Allow-Headers",
+                                "value": "Content-Type"
+                            }
+                        ]
+                    }
+                }
+            },
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 2.1,
+            "position": [
+                260,
+                300
+            ],
+            "id": "webhook-listing",
+            "name": "Webhook - Add Listing"
+        },
+        {
+            "parameters": {
+                "jsCode": "// Get the webhook data - it might be nested under 'body'\nconst input = $input.first().json;\nconst data = input.body || input;\n\n// Convert imageURLs array to comma-separated string\nconst imageURLsString = Array.isArray(data.imageURLs) \n  ? data.imageURLs.join(', ') \n  : (data.imageURLs || '');\n\n// Transform to match Google Sheets column names EXACTLY\nreturn [{\n  json: {\n    'ID': data.id || `PROP-${Date.now()}`,\n    'Title': data.title || '',\n    'Description': data.description || '',\n    'Price': data.price || 0,\n    'Location': data.location || '',\n    'Property Type': data.propertyType || '',\n    'Features': data.features || '',\n    'Image URLs': imageURLsString,\n    'Status': data.status || 'available',\n    'Timestamp': data.timestamp || new Date().toISOString()\n  }\n}];"
+            },
+            "type": "n8n-nodes-base.code",
+            "typeVersion": 2,
+            "position": [
+                480,
+                300
+            ],
+            "id": "transform-data",
+            "name": "Transform Data"
+        },
+        {
+            "parameters": {
+                "operation": "append",
+                "documentId": {
+                    "__rl": true,
+                    "value": "1HUOcIoaxTkkVe3nCunpQUpNhi6Sk8tpZ9gNCfRZBS6g",
+                    "mode": "list",
+                    "cachedResultName": "ROR-STAY Property Listings"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": "gid=0",
+                    "mode": "list",
+                    "cachedResultName": "Sheet1"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "ID": "={{ $json.ID }}",
+                        "Title": "={{ $json.Title }}",
+                        "Description": "={{ $json.Description }}",
+                        "Price": "={{ $json.Price }}",
+                        "Location": "={{ $json.Location }}",
+                        "Property Type": "={{ $json['Property Type'] }}",
+                        "Features": "={{ $json.Features }}",
+                        "Image URLs": "={{ $json['Image URLs'] }}",
+                        "Status": "={{ $json.Status }}",
+                        "Timestamp": "={{ $json.Timestamp }}"
+                    }
+                },
+                "options": {}
+            },
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 4.7,
+            "position": [
+                700,
+                300
+            ],
+            "id": "append-sheet",
+            "name": "Append to Google Sheets"
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{ { \"success\": true, \"message\": \"Property listing added successfully\", \"id\": $json.ID } }}"
+            },
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1.5,
+            "position": [
+                920,
+                300
+            ],
+            "id": "respond-listing",
+            "name": "Respond with Success"
+        }
+    ],
+    "connections": {
+        "Webhook - Add Listing": {
+            "main": [
+                [
+                    {
+                        "node": "Transform Data",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Transform Data": {
+            "main": [
+                [
+                    {
+                        "node": "Append to Google Sheets",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Append to Google Sheets": {
+            "main": [
+                [
+                    {
+                        "node": "Respond with Success",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "active": false,
+    "settings": {
+        "executionOrder": "v1"
+    }
+}

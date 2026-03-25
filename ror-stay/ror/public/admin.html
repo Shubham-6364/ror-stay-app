@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - ROR STAY</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav container">
+            <div class="nav-brand">
+                <h1 class="logo">🏠 ROR STAY Admin</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Back to Site</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Admin Panel -->
+    <section class="admin-section">
+        <div class="container">
+            <h1 class="section-title">Add New Property Listing</h1>
+
+            <div class="admin-card">
+                <form id="addListingForm" class="form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="title">Property Title *</label>
+                            <input type="text" id="title" required class="input"
+                                placeholder="e.g., 2BHK Apartment near Jagatpura">
+                        </div>
+                        <div class="form-group">
+                            <label for="propertyType">Property Type *</label>
+                            <select id="propertyType" required class="select">
+                                <option value="">Select type</option>
+                                <option value="Apartment">Apartment</option>
+                                <option value="Flat">Flat</option>
+                                <option value="House">House</option>
+                                <option value="Villa">Villa</option>
+                                <option value="Studio">Studio</option>
+                                <option value="PG">PG/Hostel</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bhk">BHK *</label>
+                            <select id="bhk" required class="select">
+                                <option value="">Select BHK</option>
+                                <option value="1">1 BHK</option>
+                                <option value="2">2 BHK</option>
+                                <option value="3">3 BHK</option>
+                                <option value="4">4+ BHK</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="area">Area (sq.ft) *</label>
+                            <input type="number" id="area" required class="input" placeholder="1200" min="100">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="furnished">Furnished Status *</label>
+                            <select id="furnished" required class="select">
+                                <option value="">Select status</option>
+                                <option value="Fully Furnished">Fully Furnished</option>
+                                <option value="Semi Furnished">Semi Furnished</option>
+                                <option value="Unfurnished">Unfurnished</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="availability">Availability *</label>
+                            <select id="availability" required class="select">
+                                <option value="">Select availability</option>
+                                <option value="Immediate">Available Now</option>
+                                <option value="Within Week">Within a Week</option>
+                                <option value="Within Month">Within a Month</option>
+                                <option value="Not Available">Not Available</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="description">Description *</label>
+                        <textarea id="description" required rows="4" class="textarea"
+                            placeholder="Describe the property..."></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="price">Monthly Rent (₹) *</label>
+                            <input type="number" id="price" required class="input" placeholder="25000" min="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="location">Location *</label>
+                            <select id="location" required class="select">
+                                <option value="">Select location</option>
+                                <option value="Durgapura">Durgapura</option>
+                                <option value="Gopalpura">Gopalpura</option>
+                                <option value="Jagatpura">Jagatpura</option>
+                                <option value="Malviya Nagar">Malviya Nagar</option>
+                                <option value="Pratap Nagar">Pratap Nagar</option>
+                                <option value="Sanganer">Sanganer</option>
+                                <option value="Vaishali Nagar">Vaishali Nagar</option>
+                                <option value="Mansarovar">Mansarovar</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="features">Features (comma-separated)</label>
+                        <input type="text" id="features" class="input"
+                            placeholder="WiFi, Parking, Security, Nearby: Infosys Phase 2">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="images">Property Images *</label>
+                        <input type="file" id="images" accept="image/*" multiple required class="input-file">
+                        <p class="form-help">Select multiple images (will be uploaded to Google Drive)</p>
+                    </div>
+
+                    <!-- Image Preview -->
+                    <div id="imagePreview" class="image-preview"></div>
+
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Add Property Listing</button>
+                </form>
+            </div>
+
+            <!-- Instructions -->
+            <div class="info-banner">
+                <h3>📝 Instructions</h3>
+                <ul>
+                    <li>Fill in all required fields marked with *</li>
+                    <li>Images will be uploaded to Google Drive automatically</li>
+                    <li>Data will be saved to Google Sheets via n8n</li>
+                    <li>Make sure your n8n workflows are active</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 ROR STAY. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+
+</html>

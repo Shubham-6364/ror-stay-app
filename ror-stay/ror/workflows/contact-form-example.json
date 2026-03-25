@@ -1,0 +1,106 @@
+{
+    "name": "Contact Form to Google Sheets",
+    "nodes": [
+        {
+            "parameters": {
+                "httpMethod": "POST",
+                "path": "contact-submit",
+                "responseMode": "responseNode",
+                "options": {}
+            },
+            "id": "webhook-1",
+            "name": "Webhook",
+            "type": "n8n-nodes-base.webhook",
+            "typeVersion": 1,
+            "position": [
+                250,
+                300
+            ]
+        },
+        {
+            "parameters": {
+                "operation": "append",
+                "documentId": {
+                    "__rl": true,
+                    "value": "YOUR_SHEET_ID_HERE",
+                    "mode": "list",
+                    "cachedResultName": "ROR-STAY Contact Submissions"
+                },
+                "sheetName": {
+                    "__rl": true,
+                    "value": "Sheet1",
+                    "mode": "list",
+                    "cachedResultName": "Sheet1"
+                },
+                "columns": {
+                    "mappingMode": "defineBelow",
+                    "value": {
+                        "Name": "={{ $json.name }}",
+                        "Email": "={{ $json.email }}",
+                        "Phone": "={{ $json.phone }}",
+                        "Preferred Location": "={{ $json.preferredLocation }}",
+                        "Requirements": "={{ $json.requirements }}",
+                        "Timestamp": "={{ $json.timestamp }}"
+                    }
+                },
+                "options": {}
+            },
+            "id": "sheets-1",
+            "name": "Google Sheets",
+            "type": "n8n-nodes-base.googleSheets",
+            "typeVersion": 3,
+            "position": [
+                450,
+                300
+            ],
+            "credentials": {
+                "googleSheetsOAuth2Api": {
+                    "id": "YOUR_CREDENTIAL_ID",
+                    "name": "Google Sheets account"
+                }
+            }
+        },
+        {
+            "parameters": {
+                "respondWith": "json",
+                "responseBody": "={{ { \"success\": true, \"message\": \"Contact submission received\" } }}",
+                "options": {}
+            },
+            "id": "respond-1",
+            "name": "Respond to Webhook",
+            "type": "n8n-nodes-base.respondToWebhook",
+            "typeVersion": 1,
+            "position": [
+                650,
+                300
+            ]
+        }
+    ],
+    "connections": {
+        "Webhook": {
+            "main": [
+                [
+                    {
+                        "node": "Google Sheets",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        },
+        "Google Sheets": {
+            "main": [
+                [
+                    {
+                        "node": "Respond to Webhook",
+                        "type": "main",
+                        "index": 0
+                    }
+                ]
+            ]
+        }
+    },
+    "settings": {
+        "executionOrder": "v1"
+    }
+}

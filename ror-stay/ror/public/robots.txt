@@ -1,0 +1,8 @@
+# robots.txt for ROR STAY
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /js/admin.js
+
+# Sitemap
+Sitemap: https://ror.codersdiary.shop/sitemap.xml
