@@ -1,0 +1,4 @@
+certbot --nginx \
+-d codersdiary.online \
+-d ror.codersdiary.online \
+-d n8n.codersdiary.online
