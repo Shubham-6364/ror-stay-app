@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+  codersdiary:
+    build:
+      context: ./codersdiary.online
+      dockerfile: Dockerfile
+    container_name: codersdiary_app
+    ports:
+      - "3001:80"
+    restart: unless-stopped
+
+  ror-stay:
+    build:
+      context: ./ror-stay
+      dockerfile: Dockerfile
+    container_name: ror_stay_app
+    ports:
+      - "3002:80"
+    restart: unless-stopped
+  n8n:
+    image: docker.n8n.io/n8nio/n8n:1.82.0
+    container_name: n8n
+    restart: unless-stopped
+
+    ports:
+      - "5678:5678"
+
+    environment:
+      # Core config
+      - N8N_HOST=n8n.coderdiary.online
+      - N8N_PORT=5678
+      - N8N_PROTOCOL=https
+      - WEBHOOK_URL=https://n8n.codersdiary.online
+
+      # 🔥 CRITICAL (fix your issue)
+      - N8N_LISTEN_ADDRESS=0.0.0.0
+
+      # Security (IMPORTANT)
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=StrongPassword123
+
+      # Optional
+      - TZ=Asia/Kolkata
+
+    volumes:
+      - n8n_data:/home/node/.n8n
+
+volumes:
+  n8n_data:
