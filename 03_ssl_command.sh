@@ -1,4 +1,5 @@
-certbot --nginx \
+#!/bin/bash
+sudo certbot --nginx \
 -d codersdiary.online \
 -d ror.codersdiary.online \
 -d n8n.codersdiary.online
