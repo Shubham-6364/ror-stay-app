@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ror
+  labels:
+    app: ror
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ror
+  template:
+    metadata:
+      labels:
+        app: ror
+    spec:
+      containers:
+        - name: ror
+          image: codersdiary/ror-stay-app:v1
+          ports:
+            - containerPort: 80
