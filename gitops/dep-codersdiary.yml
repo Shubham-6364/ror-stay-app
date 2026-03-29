@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: codersdiary
+  labels:
+    app: codersdiary
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: codersdiary
+  template:
+    metadata:
+      labels:
+        app: codersdiary
+    spec:
+      containers:
+        - name: codersdiary
+          image: codersdiary/codersdiary-app:v1
+          ports:
+            - containerPort: 80
