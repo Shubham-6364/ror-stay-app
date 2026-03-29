@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: n8n
+  labels:
+    app: n8n
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: n8n
+  template:
+    metadata:
+      labels:
+        app: n8n
+    spec:
+      containers:
+        - name: n8n
+          image: codersdiary/n8n:v1
+          ports:
+            - containerPort: 5678
+
+          env:
+            # Core settings
+            - name: N8N_HOST
+              value: "n8n.codersdiary.online"
+            - name: N8N_PORT
+              value: "5678"
+            - name: N8N_PROTOCOL
+              value: "https"
+
+            # Critical for webhooks + ingress
+            - name: WEBHOOK_URL
+              value: "https://n8n.codersdiary.online"
+
+            # Optional but recommended
+            - name: GENERIC_TIMEZONE
+              value: "Asia/Kolkata"
+
+            # Basic auth (optional, but recommended)
+            - name: N8N_BASIC_AUTH_ACTIVE
+              value: "true"
+            - name: N8N_BASIC_AUTH_USER
+              value: "admin"
+            - name: N8N_BASIC_AUTH_PASSWORD
+              value: "strongpassword"
+
+          volumeMounts:
+            - name: n8n-storage
+              mountPath: /home/node/.n8n
+
+      volumes:
+        - name: n8n-storage
+          emptyDir: {}
